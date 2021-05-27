@@ -1,0 +1,10 @@
+<!DOCTYPE html>
+<html>
+	<center>
+		<form action="" method="post">
+			{% csrf_token %}
+			{{register.as_p}}
+			<input type="submit" value="Create">
+	</center>
+</form>
+</html>
