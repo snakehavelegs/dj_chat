@@ -15,11 +15,11 @@ class ModelFormSave(RegisterForm, forms.ModelForm):
 		fields = "__all__"
 
 class ChatForm(forms.Form):
-	chatbox = forms.CharField(max_length=300, label=False)
+	message = forms.CharField(max_length=300, label=False)
 
-class ChatModel(forms.ModelForm):
+class ModelChatFormSave(ChatForm, forms.ModelForm):
 	class Meta:
 		model = chat_message
-		fields = ['message']
+		fields = "__all__"
 
 

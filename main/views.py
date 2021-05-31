@@ -2,8 +2,10 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render
 from django.contrib.auth import authenticate, login
 from .models import chat_user,chat_message
-from .forms import LoginForm, RegisterForm, ModelFormSave, ChatForm, ChatModel
-from .qdata import *
+from .forms import LoginForm, RegisterForm, ModelFormSave, ChatForm, ModelChatFormSave
+from .serializers import *
+from django.http.response import JsonResponse
+from rest_framework.parsers import JSONParser, FormParser
 
 
 def home_view(request):
@@ -18,7 +20,6 @@ def home_view(request):
 			return render(request, 'incorrect/incorrect.html', {'form': form})
 		
 		if checkuser is not None:
-			go_message(checkuser)
 			return HttpResponseRedirect('/grats')
 		else:
 			form = LoginForm()
@@ -47,9 +48,11 @@ def register(request):
 	return render(request, 'registration/register.html', {'register': register})
 
 def chat(request):
-	chatform = ChatForm()
+	chatform = ModelChatFormSave()
 	if request.method == "POST":
-		message = ChatModel(request.POST)
-		if message.is_valid():
-			message.save()
+		message = FormParser().parse(request)
+		serializer = MessageSerializer(data=message)
+		if serializer.is_valid():
+			serializer.save()
 	return render(request, 'grats/grats.html', {'chatform': chatform})
+

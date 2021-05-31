@@ -1,5 +1,4 @@
 from .models import *
-def go_message(username, password):
-
-	data = chat_message.objects.get(chatuser)
-	print(data)
+def go_message(username):
+	data = chat_message.objects.raw('SELECT * FROM chat_message WHERE username = %s', [username])
+	data.save()

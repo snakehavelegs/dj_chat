@@ -14,7 +14,7 @@ class chat_user(models.Model):
 class chat_message(models.Model):
 	chatuser = models.ForeignKey(chat_user, on_delete = models.CASCADE)
 	message = models.CharField(max_length=300)
-	date = models.DateTimeField()
+	date = models.DateTimeField(auto_now_add=True)
 
 	def __str__(self):
 		return self.message
