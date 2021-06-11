@@ -20,6 +20,6 @@ class ChatForm(forms.Form):
 class ModelChatFormSave(ChatForm, forms.ModelForm):
 	class Meta:
 		model = chat_message
-		fields = "__all__"
+		fields = ['message']
 
 

@@ -6,5 +6,5 @@ urlpatterns = [
 	path('myacc/', myacc),
 	path('mynone/', mynone),
 	path('register/', register),
-	path('grats/', chat)
+	path('chat/', chat)
 	]

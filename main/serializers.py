@@ -1,7 +1,9 @@
 from rest_framework import serializers
-from .models import *
+from .models import chat_user, chat_message
+from .views import *
 
 class MessageSerializer(serializers.ModelSerializer):
+	chatuser = serializers.SlugRelatedField(many=False, slug_field='name', queryset=chat_user.objects.all())
 	class Meta:
 		model = chat_message
-		fields = '__all__'
+		fields = ['chatuser', 'message']

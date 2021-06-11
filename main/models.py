@@ -12,7 +12,8 @@ class chat_user(models.Model):
 		return self.name
 
 class chat_message(models.Model):
-	chatuser = models.ForeignKey(chat_user, on_delete = models.CASCADE)
+	chatuser = models.ForeignKey(chat_user, on_delete = models.CASCADE, null=True, default=None)
+	sender = models.CharField(max_length=300, null= True, default=None)
 	message = models.CharField(max_length=300)
 	date = models.DateTimeField(auto_now_add=True)
 

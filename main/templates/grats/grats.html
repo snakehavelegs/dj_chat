@@ -14,10 +14,11 @@
 </iframe><br></br>
 <form action="" method="POST">
 	{% csrf_token %}
-	{{ chatform.as_p }}
+	{{chatform.as_p}}
 	{{message}}
 	<input type="submit" value="Send">
-</form>
+</form> 
+<p1>{{CURR_USER}}</p1>
 </center>
 
 </body>
