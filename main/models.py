@@ -20,3 +20,7 @@ class chat_message(models.Model):
 	def __str__(self):
 		return self.message
 
+class in_room(models.Model):
+	users = models.CharField(max_length=300, default=None)
+	def __str__(self):
+		return self.users

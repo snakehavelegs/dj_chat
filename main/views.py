@@ -1,31 +1,29 @@
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render
 from django.contrib.auth import authenticate, login
-from .models import chat_user,chat_message
+from .models import chat_user,chat_message, in_room
 from .forms import LoginForm, RegisterForm, ModelFormSave, ChatForm, ModelChatFormSave
 from .serializers import *
 from django.http.response import JsonResponse
 from rest_framework.parsers import JSONParser, FormParser
-global CURR_USER
-global checkuser
-CURR_USER = list()
+
 
 def home_view(request):
 	if request.method == "POST":
+		in_room.objects.all().delete()
 		form = LoginForm()
 		username = request.POST['username']
 		password = request.POST['password']
 		try:
 			global checkuser
 			checkuser = chat_user.objects.get(username=username, password=password)
-			
 		except:
 			form = LoginForm()
 			return render(request, 'incorrect/incorrect.html', {'form': form})
 		
 		if checkuser is not None:
-			global CURR_USER
-			CURR_USER.append('Artur')
+			name = checkuser.name
+			in_room(users=name).save()
 			return HttpResponseRedirect('chat/')
 	
 		else:
@@ -36,12 +34,6 @@ def home_view(request):
 		form = LoginForm()
 
 	return render(request, 'login.html', {'form': form})
-
-def myacc(request):
-	return HttpResponse('<h1>Nice!</h1>')
-
-def mynone(request):
-	return HttpResponse('<h1>Fuk!</h1>')
 
 def register(request):
 	if request.method == "POST":
@@ -59,7 +51,8 @@ def chat(request):
 	if request.method == "POST":
 		chatform = ModelChatFormSave(request.POST)
 		if chatform.is_valid():
-			global CURR_USER
 			cdata= chatform.cleaned_data['message']
-			chat_message.objects.create(message=cdata, sender=CURR_USER, chatuser=chat_user.objects.get(name="Artur"))
+			chat_message.objects.create(message=cdata, sender = in_room.objects.all()[0], chatuser=chat_user.objects.get(name=in_room.objects.all()[0]))
+			chatform = ModelChatFormSave()
 	return render(request, 'grats/grats.html', {'chatform': chatform})
+
