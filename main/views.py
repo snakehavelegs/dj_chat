@@ -48,11 +48,13 @@ def register(request):
 
 def chat(request):
 	chatform = ModelChatFormSave()
+	message= ""
+	getmsg = chat_message.objects.all()
 	if request.method == "POST":
 		chatform = ModelChatFormSave(request.POST)
 		if chatform.is_valid():
 			cdata= chatform.cleaned_data['message']
-			chat_message.objects.create(message=cdata, sender = in_room.objects.all()[0], chatuser=chat_user.objects.get(name=in_room.objects.all()[0]))
+			msg=chat_message.objects.create(message=cdata, sender = in_room.objects.all()[0], chatuser=chat_user.objects.get(name=in_room.objects.all()[0]))
 			chatform = ModelChatFormSave()
-	return render(request, 'grats/grats.html', {'chatform': chatform})
+	return render(request, 'grats/grats.html', {'chatform': chatform, 'message': message, 'getmsg': getmsg})
 

@@ -9,16 +9,28 @@
 
 <body>
 	<center>
-	<iframe width="1000" height="650">
-		{{message.as_p}}
-</iframe><br></br>
+	<frame>
+	{%for getmsg in getmsg%}
+		<p1>{{getmsg}}<p1><br><br>
+	{%endfor%}
+
+		</frame>
+<br></br>
 <form action="" method="POST">
 	{% csrf_token %}
 	{{chatform.as_p}}
-	{{message}}
 	<input type="submit" value="Send">
 </form> 
-<p1>{{CURR_USER}}</p1>
+<script>
+	var socket = new WebSocket('ws://localhost:8000/chat/');
+
+	socket.onmessage = function(event){
+		var data = JSON.parse(event.data);
+		console.log(data);
+		document.querySelector('#app').innerText = data.msg;
+	}
+
+</script>
 </center>
 
 </body>
